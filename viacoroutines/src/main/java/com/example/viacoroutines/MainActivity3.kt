@@ -26,7 +26,6 @@ class MainActivity3 : AppCompatActivity() {
         super.onStart()
         mPrefs = getSharedPreferences(localClassName, MODE_PRIVATE)
         secondsElapsed = mPrefs.getInt(strSecondsElapsed, secondsElapsed)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +35,8 @@ class MainActivity3 : AppCompatActivity() {
         lifecycleScope.launchWhenResumed {
             while (true) {
                 delay(1000)
-                textSecondsElapsed.post {
+                Log.d("Working thread1: ", Thread.currentThread().name)
+                withContext(Dispatchers.Main) {
                     (strSecondsElapsed + secondsElapsed++).also { textSecondsElapsed.text = it }
                 }
             }
